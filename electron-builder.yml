@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: sztu-toolkit
+appId: top.fumoe.sztu
+productName: SZTU Toolkit
 directories:
   buildResources: build
 files:
@@ -8,11 +8,14 @@ files:
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
-asarUnpack:
-  - resources/**
+extraResources:
+  - from: './resources'
+    to: '.'
 win:
-  executableName: sztu-toolkit
+  executableName: SZTU Toolkit
 nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}

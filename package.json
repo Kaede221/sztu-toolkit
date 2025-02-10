@@ -1,6 +1,6 @@
 {
   "name": "sztu-toolkit",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "自制的SZTU小工具合集",
   "main": "./out/main/index.js",
   "author": "Kaede Shimizu",

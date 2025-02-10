@@ -1,5 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain, nativeImage, Tray, Menu } from 'electron'
-import { resolve } from 'path'
+import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 const { spawn } = require('child_process')
 const treeKill = require('tree-kill')
@@ -15,10 +15,10 @@ function createWindow() {
     resizable: false,
     maximizable: false,
     show: false,
-    icon: './resources/logo.jpg',
+    icon: join(app.getAppPath(), './resources/icon.ico'),
     autoHideMenuBar: true,
     webPreferences: {
-      preload: resolve(__dirname, '../preload/preload.js'),
+      preload: join(__dirname, '../preload/preload.js'),
       sandbox: false
     }
   })
@@ -43,7 +43,7 @@ function createWindow() {
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(resolve(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
 
@@ -52,16 +52,24 @@ let childProcess_AutoConn = null
 let childProcess_AutoLab = null
 
 // TODO 定义函数调用内容 ↓↓↓
+
+// 定义函数 直接获取文件路径
+function getExePath(fileName) {
+  if (is.dev) {
+    return join(app.getAppPath(), './resources/applications', fileName)
+  } else {
+    return join(process.resourcesPath, 'applications', fileName)
+  }
+}
+
 function startAutoLab() {
   // 判断程序是否已经在运行了
   if (childProcess_AutoLab) {
     console.log('Process has been created!')
     return
   }
-  // 首先 获取程序的路径
-  const exePath = resolve(__dirname, '../../resources/applications/AutoLab.exe')
   // 启动子进程
-  childProcess_AutoLab = spawn(exePath)
+  childProcess_AutoLab = spawn(getExePath('AutoLab.exe'))
   console.log('Auto Lab has been clicked!')
 }
 
@@ -82,10 +90,8 @@ function startAutoConn() {
     console.log('Process has been created!')
     return
   }
-  // 首先 获取程序的路径
-  const exePath = resolve(__dirname, '../../resources/applications/AutoConn.exe')
   // 启动子进程
-  childProcess_AutoConn = spawn(exePath)
+  childProcess_AutoConn = spawn(getExePath('AutoConn.exe'))
   console.log('Successfully started!')
 }
 
@@ -126,7 +132,7 @@ app.on('ready', () => {
 
 // 创建托盘图标
 function createTray() {
-  const iconPath = './resources/logo.jpg'
+  const iconPath = join(app.getAppPath(), './resources/icon.ico')
   const trayIcon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 })
   tray = new Tray(trayIcon)
 
