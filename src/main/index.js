@@ -1,12 +1,15 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, nativeImage, Tray, Menu } from 'electron'
 import { resolve } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 const { spawn } = require('child_process')
 const treeKill = require('tree-kill')
 
+let tray = null
+let mainWindow = null
+
 function createWindow() {
   // 创建主窗口
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 860,
     height: 680,
     resizable: false,
@@ -22,6 +25,14 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  // 设置程序 关闭后是隐藏 不是彻底关闭
+  mainWindow.on('close', (event) => {
+    if (!app.isQuitting) {
+      event.preventDefault()
+      mainWindow.hide()
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -72,9 +83,9 @@ function endAutoConn() {
 
 // TODO 定义结束 ↑↑↑
 
-app.whenReady().then(() => {
+app.on('ready', () => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.fumoe')
+  electronApp.setAppUserModelId('com.fumoe.top')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
@@ -86,14 +97,48 @@ app.whenReady().then(() => {
   ipcMain.on('end-auto-conn', endAutoConn)
 
   createWindow()
+  createTray()
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+// 创建托盘图标
+function createTray() {
+  const iconPath = './resources/logo.jpg'
+  const trayIcon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 })
+  tray = new Tray(trayIcon)
+
+  // 定义菜单
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '打开主界面',
+      click: () => {
+        if (mainWindow) {
+          mainWindow.show() // 显示主窗口
+        }
+      }
+    },
+    {
+      label: '退出',
+      click: () => {
+        app.isQuitting = true // 标记为退出
+        app.quit() // 退出应用程序
+      }
+    }
+  ])
+
+  tray.setToolTip('SZTU Toolkit by Kaede')
+  tray.setContextMenu(contextMenu)
+
+  tray.on('click', () => {
+    if (mainWindow) {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide()
+      } else {
+        mainWindow.show()
+      }
+    }
+  })
+}
