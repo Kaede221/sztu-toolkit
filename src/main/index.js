@@ -1,8 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain, nativeImage, Tray, Menu } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-const { spawn } = require('child_process')
-const treeKill = require('tree-kill')
+
+// 引入Kaede自定义工具包
+import { endProcess, startProcess } from './exeUtils'
 
 let tray = null
 let mainWindow = null
@@ -51,63 +52,6 @@ function createWindow() {
 let childProcess_AutoConn = null
 let childProcess_AutoLab = null
 
-// TODO 定义函数调用内容 ↓↓↓
-
-// 定义函数 直接获取文件路径
-function getExePath(fileName) {
-  if (is.dev) {
-    return join(app.getAppPath(), './resources/applications', fileName)
-  } else {
-    return join(process.resourcesPath, 'applications', fileName)
-  }
-}
-
-function startAutoLab() {
-  // 判断程序是否已经在运行了
-  if (childProcess_AutoLab) {
-    console.log('Process has been created!')
-    return
-  }
-  // 启动子进程
-  childProcess_AutoLab = spawn(getExePath('AutoLab.exe'))
-  console.log('Auto Lab has been clicked!')
-}
-
-function endAutoLab() {
-  if (!childProcess_AutoLab) {
-    console.log('There is no process running.')
-    return
-  }
-  // 关闭程序即可
-  treeKill(childProcess_AutoLab.pid)
-  childProcess_AutoLab = null
-  console.log('Successfully closed!')
-}
-
-function startAutoConn() {
-  // 判断程序是否已经在运行了
-  if (childProcess_AutoConn) {
-    console.log('Process has been created!')
-    return
-  }
-  // 启动子进程
-  childProcess_AutoConn = spawn(getExePath('AutoConn.exe'))
-  console.log('Successfully started!')
-}
-
-function endAutoConn() {
-  if (!childProcess_AutoConn) {
-    console.log('There is no process running.')
-    return
-  }
-  // 关闭程序即可
-  treeKill(childProcess_AutoConn.pid)
-  childProcess_AutoConn = null
-  console.log('Successfully closed!')
-}
-
-// TODO 定义结束 ↑↑↑
-
 app.on('ready', () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.fumoe.top')
@@ -117,17 +61,15 @@ app.on('ready', () => {
   })
 
   // TODO 接收参数 调用对应内容
-  ipcMain.on('start-auto-lab', startAutoLab)
-  ipcMain.on('end-auto-lab', endAutoLab)
-  ipcMain.on('start-auto-conn', startAutoConn)
-  ipcMain.on('end-auto-conn', endAutoConn)
+  ipcMain.on('start-auto-lab', () => startProcess(childProcess_AutoLab, 'Auto Lab', 'AutoLab.exe'))
+  ipcMain.on('end-auto-lab', () => endProcess(childProcess_AutoLab, 'Auto Lab'))
+  ipcMain.on('start-auto-conn', () =>
+    startProcess(childProcess_AutoConn, 'Auto Conn', 'AutoConn.exe')
+  )
+  ipcMain.on('end-auto-conn', () => endProcess(childProcess_AutoConn, 'Auto Conn'))
 
   createWindow()
   createTray()
-
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
 })
 
 // 创建托盘图标
