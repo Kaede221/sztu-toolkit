@@ -4,6 +4,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 // 自定义API
 const api = {
   startAutoLab: () => ipcRenderer.send('start-auto-lab'),
+  endAutoLab: () => ipcRenderer.send('end-auto-lab'),
   startAutoConn: () => ipcRenderer.send('start-auto-conn'),
   endAutoConn: () => ipcRenderer.send('end-auto-conn')
 }

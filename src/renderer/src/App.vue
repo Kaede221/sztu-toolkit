@@ -20,11 +20,11 @@ const handleButtonClickStart = (index) => {
   switch (index) {
     case 0:
       window.api.startAutoLab()
-      alert('Auto Lab 工具已经启动')
+      new Notification('Kaede 提示你!', { body: 'Auto Lab 工具启动啦!' })
       break
     case 1:
       window.api.startAutoConn()
-      alert('Auto Conn 开始运行啦!')
+      new Notification('Kaede 有话说!', { body: 'Auto Conn 开始运行啦!' })
       break
     default:
       alert('未知启动')
@@ -34,11 +34,12 @@ const handleButtonClickStart = (index) => {
 const handleButtonClickEnd = (index) => {
   switch (index) {
     case 0:
-      alert('Auto Lab 工具已经停止')
+      window.api.endAutoLab()
+      new Notification('Kaede 发现', { body: 'Auto Lab 工具已经停止咯' })
       break
     case 1:
       window.api.endAutoConn()
-      alert('Auto Conn 睡觉去咯~')
+      new Notification('Kaede 意识到', { body: 'Auto Conn 睡觉去咯~' })
       break
     default:
       alert('未知停止')
