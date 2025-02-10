@@ -3,7 +3,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // 自定义API
 const api = {
-  startAutoLab: () => ipcRenderer.send('start-auto-lab')
+  startAutoLab: () => ipcRenderer.send('start-auto-lab'),
+  startAutoConn: () => ipcRenderer.send('start-auto-conn'),
+  endAutoConn: () => ipcRenderer.send('end-auto-conn')
 }
 
 if (process.contextIsolated) {

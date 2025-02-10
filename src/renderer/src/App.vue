@@ -1,16 +1,18 @@
 <script setup>
 import AppCard from './components/AppCard.vue'
 
-// 初始化工具相关数据
+// ! 初始化工具相关数据
 const cards = [
   {
     title: 'Auto Lab',
     info: '简单的实验室速通工具, 基于Python开发, 不会读取你的任何数据! 放心使用即可',
     iconImage: 'fa-flask'
   },
-  { title: '工具2', info: '这是工具2的介绍信息', iconImage: 'fa-cogs' },
-  { title: '工具3', info: '这是工具3的介绍信息', iconImage: 'fa-wrench' },
-  { title: '工具4', info: '这是工具4的介绍信息', iconImage: 'fa-hammer' }
+  {
+    title: 'Auto Conn',
+    info: '断网自动重连工具, 帮助你在掉网络的时候自动重新连接!',
+    iconImage: 'fa-plug'
+  }
 ]
 
 // 定义两个点击事件 分别是启动和结束运行
@@ -21,13 +23,8 @@ const handleButtonClickStart = (index) => {
       alert('Auto Lab 工具已经启动')
       break
     case 1:
-      alert('工具2启动')
-      break
-    case 2:
-      alert('工具3启动')
-      break
-    case 3:
-      alert('工具4启动')
+      window.api.startAutoConn()
+      alert('Auto Conn 开始运行啦!')
       break
     default:
       alert('未知启动')
@@ -40,13 +37,8 @@ const handleButtonClickEnd = (index) => {
       alert('Auto Lab 工具已经停止')
       break
     case 1:
-      alert('工具2停止')
-      break
-    case 2:
-      alert('工具3停止')
-      break
-    case 3:
-      alert('工具4停止')
+      window.api.endAutoConn()
+      alert('Auto Conn 睡觉去咯~')
       break
     default:
       alert('未知停止')
