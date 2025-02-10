@@ -1,10 +1,10 @@
 # sztu-toolkit
 
-An Electron application with Vue
+Kaede, 一个大一新生自制的 SZTU 小工具, 欢迎查看源代码或者自行进行修改!
 
-## Recommended IDE Setup
+## 技术栈
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Vue3, Vite, Electron
 
 ## Project Setup
 
@@ -14,13 +14,13 @@ An Electron application with Vue
 $ yarn
 ```
 
-### Development
+### 开发
 
 ```bash
 $ yarn dev
 ```
 
-### Build
+### 构建
 
 ```bash
 # For windows
@@ -32,3 +32,11 @@ $ yarn build:mac
 # For Linux
 $ yarn build:linux
 ```
+
+# 开发进度
+
+- [x] 设计程序页面
+- [x] 实现按钮交互
+- [ ] **重构工具类**
+- [ ] **实现按钮调用程序**
+- [ ] 打包程序并构建Release

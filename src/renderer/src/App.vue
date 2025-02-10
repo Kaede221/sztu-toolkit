@@ -17,6 +17,7 @@ const cards = [
 const handleButtonClickStart = (index) => {
   switch (index) {
     case 0:
+      window.api.startAutoLab()
       alert('Auto Lab 工具已经启动')
       break
     case 1:
