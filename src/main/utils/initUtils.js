@@ -5,13 +5,14 @@ import { nativeImage, Tray, Menu, app, BrowserWindow, shell, dialog } from 'elec
 import { autoUpdater } from 'electron-updater'
 import { is } from '@electron-toolkit/utils'
 import { join } from 'path'
+import { signals } from '../constants/commonConstants'
 
 /**
  * 通过主进程调用Toast的函数
  * @param {BrowserWindow} mainWindow 主窗口对象
  */
 export function mainShowToast(mainWindow, data) {
-  mainWindow.webContents.send('main-show-toast', data)
+  mainWindow.webContents.send(signals.MAIN_SHOW_TOAST, data)
 }
 
 /**

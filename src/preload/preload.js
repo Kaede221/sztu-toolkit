@@ -11,7 +11,7 @@ const api = {
 
   // TODO 主进程->渲染进程
   // 实现通用Toast方法
-  mainShowToast: (callback) => ipcRenderer.on('main-show-toast', (_, data) => callback(data))
+  mainShowToast: (callback) => ipcRenderer.on(signals.MAIN_SHOW_TOAST, (_, data) => callback(data))
 }
 
 contextBridge.exposeInMainWorld('api', api)

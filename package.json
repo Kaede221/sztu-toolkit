@@ -1,7 +1,7 @@
 {
   "name": "sztu-toolkit",
-  "version": "2.0.0",
-  "description": "自制的SZTU小工具合集",
+  "version": "1.2.0",
+  "description": "Kaede自制的SZTU小工具合集",
   "main": "./out/main/index.js",
   "author": "Kaede Shimizu",
   "homepage": "https://blog.fumoe.top",

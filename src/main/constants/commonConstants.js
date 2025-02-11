@@ -8,5 +8,6 @@ export const signals = {
   END_AUTO_LAB: 'end-auto-lab',
   // Auto Conn的信号
   START_AUTO_CONN: 'start-auto-conn',
-  END_AUTO_CONN: 'end-auto-conn'
+  END_AUTO_CONN: 'end-auto-conn',
+  MAIN_SHOW_TOAST: 'main-show-toast'
 }
