@@ -1,7 +1,8 @@
 <script setup>
 import AppCard from './components/AppCard.vue'
+import { showToast } from './utils/ks-utils'
 
-// ! 初始化工具相关数据
+// 初始化工具相关数据
 const cards = [
   {
     title: 'Auto Lab',
@@ -20,11 +21,11 @@ const handleButtonClickStart = (index) => {
   switch (index) {
     case 0:
       window.api.startAutoLab()
-      new Notification('Kaede 提示你!', { body: 'Auto Lab 工具启动啦!' })
+      showToast('Auto Lab 工具启动啦!', 'success')
       break
     case 1:
       window.api.startAutoConn()
-      new Notification('Kaede 有话说!', { body: 'Auto Conn 开始运行啦!' })
+      showToast('Auto Conn 正在运行!', 'success')
       break
     default:
       alert('未知启动')
@@ -35,11 +36,11 @@ const handleButtonClickEnd = (index) => {
   switch (index) {
     case 0:
       window.api.endAutoLab()
-      new Notification('Kaede 发现', { body: 'Auto Lab 工具已经停止咯' })
+      showToast('Auto Lab 工具已经停止咯', 'error')
       break
     case 1:
       window.api.endAutoConn()
-      new Notification('Kaede 意识到', { body: 'Auto Conn 睡觉去咯~' })
+      showToast('Auto Conn 进入休眠模式', 'error')
       break
     default:
       alert('未知停止')
