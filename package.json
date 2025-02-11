@@ -1,10 +1,6 @@
 {
   "name": "sztu-toolkit",
-  "version": "0.0.1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Kaede221/sztu-toolkit.git"
-  },
+  "version": "2.0.0",
   "description": "自制的SZTU小工具合集",
   "main": "./out/main/index.js",
   "author": "Kaede Shimizu",
@@ -24,6 +20,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "electron-updater": "^6.3.9",
     "tree-kill": "^1.2.2",
     "vue3-toastify": "^0.2.8"
   },

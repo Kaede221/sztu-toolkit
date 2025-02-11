@@ -12,6 +12,9 @@ const api = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('versions', {
+      appVersion: process.env.npm_package_version
+    })
   } catch (error) {
     console.error(error)
   }

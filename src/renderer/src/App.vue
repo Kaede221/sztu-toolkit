@@ -3,6 +3,9 @@ import AppCard from './components/AppCard.vue'
 import FloatButton from './components/FloatButton.vue'
 import { showToast } from './utils/ks-utils'
 
+// 获取版本号
+const versions = window.versions
+
 // 初始化工具相关数据
 const cards = [
   {
@@ -51,7 +54,10 @@ const handleButtonClickEnd = (index) => {
 
 <template>
   <div class="header">
-    <h1 class="title"><span class="colorful-text">SZTU</span> Toolkit</h1>
+    <h1 class="title">
+      <span class="colorful-text">SZTU</span> Toolkit
+      <small class="version-text">{{ versions.appVersion }}</small>
+    </h1>
     <p class="tip">由 Kaede 制作的 SZTU 小工具合集</p>
     <FloatButton />
   </div>
@@ -76,6 +82,14 @@ const handleButtonClickEnd = (index) => {
 
 .colorful-text {
   background: linear-gradient(90deg, rgb(245, 223, 152), rgb(255, 167, 3));
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.version-text {
+  font-style: italic;
+  background: linear-gradient(215deg, rgb(2, 161, 253), rgb(255, 255, 255));
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;

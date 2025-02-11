@@ -1,7 +1,8 @@
 /**
  * 实现一些初始化程序的方法
  */
-import { nativeImage, Tray, Menu, app, BrowserWindow, shell } from 'electron'
+import { nativeImage, Tray, Menu, app, BrowserWindow, shell, dialog } from 'electron'
+import { autoUpdater } from 'electron-updater'
 import { is } from '@electron-toolkit/utils'
 import { join } from 'path'
 
@@ -91,4 +92,47 @@ export function createAndGetWindow() {
   }
 
   return mainWindow
+}
+
+/**
+ * 初始化更新内容
+ */
+export function initUpdate() {
+  // 配置更新选项
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...')
+  })
+  autoUpdater.on('update-available', () => {
+    console.log('Downloaded successfully')
+  })
+  autoUpdater.on('update-not-available', () => {
+    console.log('You are the lastest version.')
+  })
+  autoUpdater.on('error', (ev, err) => {
+    console.log('Error on updating')
+    console.log(ev, err)
+  })
+  autoUpdater.on('download-progress', () => {
+    console.log('Downloading...')
+  })
+  autoUpdater.on('update-downloaded', () => {
+    console.log('Ready to update!')
+    const options = {
+      type: 'info',
+      buttons: ['确定', '取消'],
+      title: '应用更新',
+      message: '发现了一个新版本哦! 推荐更新一下!'
+    }
+    dialog.showMessageBox(options).then((returnVal) => {
+      if (returnVal.response === 0) {
+        console.log('Started update...')
+        setTimeout(() => {
+          autoUpdater.quitAndInstall()
+        }, 1000)
+      } else {
+        console.log('cancel update')
+        return
+      }
+    })
+  })
 }
