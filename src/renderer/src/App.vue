@@ -1,5 +1,6 @@
 <script setup>
 import AppCard from './components/AppCard.vue'
+import FloatButton from './components/FloatButton.vue'
 import { showToast } from './utils/ks-utils'
 
 // 初始化工具相关数据
@@ -52,6 +53,7 @@ const handleButtonClickEnd = (index) => {
   <div class="header">
     <h1 class="title"><span class="colorful-text">SZTU</span> Toolkit</h1>
     <p class="tip">由 Kaede 制作的 SZTU 小工具合集</p>
+    <FloatButton />
   </div>
   <br />
   <div class="card-group">

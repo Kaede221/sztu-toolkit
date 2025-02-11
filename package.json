@@ -1,6 +1,10 @@
 {
   "name": "sztu-toolkit",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kaede221/sztu-toolkit.git"
+  },
   "description": "自制的SZTU小工具合集",
   "main": "./out/main/index.js",
   "author": "Kaede Shimizu",
