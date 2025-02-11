@@ -1,10 +1,9 @@
 import { app, ipcMain } from 'electron'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 
 // 引入自定义工具包
 import { endProcess, startProcess } from './utils/exeUtils'
 import { createTray, createAndGetWindow, initUpdate } from './utils/initUtils'
-import { autoUpdater } from 'electron-updater'
 import { signals } from './constants/commonConstants'
 
 // 定义主窗口对象
@@ -29,4 +28,5 @@ app.on('ready', () => {
 
   mainWindow = createAndGetWindow()
   createTray(mainWindow)
+  initUpdate(mainWindow)
 })

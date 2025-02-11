@@ -2,6 +2,11 @@
 import AppCard from './components/AppCard.vue'
 import { showToast } from './utils/ks-utils'
 
+// 实现通用的, 主进程调用渲染进程的Toast的方法
+window.api.mainShowToast((data) => {
+  showToast(data.message, data.type, data.theme, data.transition, data.autoClose, data.position)
+})
+
 // 初始化工具相关数据
 const cards = [
   {

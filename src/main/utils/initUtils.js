@@ -7,6 +7,14 @@ import { is } from '@electron-toolkit/utils'
 import { join } from 'path'
 
 /**
+ * 通过主进程调用Toast的函数
+ * @param {BrowserWindow} mainWindow 主窗口对象
+ */
+export function mainShowToast(mainWindow, data) {
+  mainWindow.webContents.send('main-show-toast', data)
+}
+
+/**
  * 初始化托盘图标
  * @param {BrowserWindow} mainWindow 主窗口对象
  */
@@ -64,7 +72,7 @@ function initMenuBar(mainWindow) {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: '关于 Kaede',
-              message: 'Kaede 是本程序的开发者哦!'
+              message: 'Kaede 是本程序的开发者哦!\n欢迎随时提供建议!\nkaedeshimizu@qq.com'
             })
           }
         },
@@ -74,7 +82,7 @@ function initMenuBar(mainWindow) {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: '关于程序',
-              message: '这是一个基于 Electron 和 Vue3 的应用程序。\n版权所有 © 2025'
+              message: `SZTU Toolkit 是一个基于 Electron 和 Vue3 的应用\n\nElectron: ${process.versions.electron}\nNodeJS: ${process.versions.node}`
             })
           }
         }
@@ -83,7 +91,17 @@ function initMenuBar(mainWindow) {
     {
       label: '检查更新',
       click: () => {
-        console.log('Checking update.')
+        // 调用检查更新的函数即可
+        // 首先判断当前环境是什么
+        if (is.dev) {
+          mainShowToast(mainWindow, {
+            message: '当前为开发环境 无法更新',
+            autoClose: 3000
+          })
+        } else {
+          // 开始检查更新!
+          autoUpdater.checkForUpdates()
+        }
       }
     }
   ]
@@ -144,26 +162,30 @@ export function createAndGetWindow() {
 /**
  * 初始化更新内容
  */
-export function initUpdate() {
+export function initUpdate(mainWindow) {
   // 配置更新选项
   autoUpdater.on('checking-for-update', () => {
     console.log('Checking for update...')
+    mainShowToast(mainWindow, { message: '检查更新中' })
   })
   autoUpdater.on('update-available', () => {
     console.log('Downloaded successfully')
+    mainShowToast(mainWindow, { message: '更新下载完毕' })
   })
   autoUpdater.on('update-not-available', () => {
     console.log('You are the lastest version.')
+    mainShowToast(mainWindow, { message: '你已经是最新版啦' })
   })
   autoUpdater.on('error', (ev, err) => {
     console.log('Error on updating')
     console.log(ev, err)
+    mainShowToast(mainWindow, { message: `更新失败! \n${err}\n点击关闭`, autoClose: false })
   })
   autoUpdater.on('download-progress', () => {
     console.log('Downloading...')
+    mainShowToast(mainWindow, { message: '更新下载中' })
   })
   autoUpdater.on('update-downloaded', () => {
-    console.log('Ready to update!')
     const options = {
       type: 'info',
       buttons: ['确定', '取消'],
@@ -172,12 +194,12 @@ export function initUpdate() {
     }
     dialog.showMessageBox(options).then((returnVal) => {
       if (returnVal.response === 0) {
-        console.log('Started update...')
+        mainShowToast(mainWindow, { message: '准备开始更新' })
         setTimeout(() => {
           autoUpdater.quitAndInstall()
-        }, 1000)
+        }, 3000)
       } else {
-        console.log('cancel update')
+        mainShowToast(mainWindow, { message: '更新取消' })
         return
       }
     })
