@@ -9,15 +9,4 @@ const api = {
   endAutoConn: () => ipcRenderer.send(signals.END_AUTO_CONN)
 }
 
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('api', api)
-    contextBridge.exposeInMainWorld('versions', {
-      appVersion: process.env.npm_package_version
-    })
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  window.api = api
-}
+contextBridge.exposeInMainWorld('api', api)

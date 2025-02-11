@@ -49,6 +49,50 @@ export function createTray(mainWindow) {
 }
 
 /**
+ * 初始化菜单栏
+ * @param {BrowserWindow} mainWindow 主窗口对象
+ */
+function initMenuBar(mainWindow) {
+  // 直接定义菜单模板即可
+  let template = [
+    {
+      label: '关于',
+      submenu: [
+        {
+          label: '关于 Kaede',
+          click: () => {
+            dialog.showMessageBox(mainWindow, {
+              type: 'info',
+              title: '关于 Kaede',
+              message: 'Kaede 是本程序的开发者哦!'
+            })
+          }
+        },
+        {
+          label: '关于程序',
+          click: () => {
+            dialog.showMessageBox(mainWindow, {
+              type: 'info',
+              title: '关于程序',
+              message: '这是一个基于 Electron 和 Vue3 的应用程序。\n版权所有 © 2025'
+            })
+          }
+        }
+      ]
+    },
+    {
+      label: '检查更新',
+      click: () => {
+        console.log('Checking update.')
+      }
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}
+
+/**
  * 创建主窗口并返回
  * @returns 创建好的主窗口对象
  */
@@ -61,12 +105,15 @@ export function createAndGetWindow() {
     maximizable: false,
     show: false,
     icon: join(app.getAppPath(), './resources/icon.ico'),
-    autoHideMenuBar: true,
+    // autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, '../preload/preload.js'),
       sandbox: false
     }
   })
+
+  // 加载菜单
+  initMenuBar(mainWindow)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

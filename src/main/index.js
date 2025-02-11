@@ -29,12 +29,4 @@ app.on('ready', () => {
 
   mainWindow = createAndGetWindow()
   createTray(mainWindow)
-
-  // 检查更新
-  if (!is.dev) {
-    initUpdate()
-    autoUpdater.checkForUpdates()
-  } else {
-    console.log('Dev environment. You cannot update.')
-  }
 })
